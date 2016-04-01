@@ -7,12 +7,12 @@
         mc:Ignorable="d"
         Title="" Height="300" Width="200" ResizeMode="CanMinimize" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen">
     <Grid>
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Center" Margin="0,20,0,0" TextWrapping="Wrap" Text="Longdo Cards POS" VerticalAlignment="Top" FontWeight="Bold" FontSize="18"/>
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Center" Margin="0,20,0,0" Text="Longdo Cards POS" VerticalAlignment="Top" FontWeight="Bold" FontSize="18"/>
         <TextBlock HorizontalAlignment="Left" Margin="20,70,0,0" Text="Usename" VerticalAlignment="Top" FontSize="14"/>
         <TextBox x:Name="UsernameBox" HorizontalAlignment="Center" Margin="0,90,0,0" VerticalAlignment="Top" Width="150" FontSize="14" KeyUp="UsernameBox_KeyUp"/>
-        <TextBlock HorizontalAlignment="Left" Margin="20,130,0,0" TextWrapping="Wrap" Text="Password" VerticalAlignment="Top" FontSize="14"/>
+        <TextBlock HorizontalAlignment="Left" Margin="20,130,0,0" Text="Password" VerticalAlignment="Top" FontSize="14"/>
         <PasswordBox x:Name="PasswordBox" HorizontalAlignment="Center" Margin="0,150,0,0" VerticalAlignment="Top" Width="150" FontSize="14" KeyUp="PasswordBox_KeyUp"/>
-        <Button x:Name="LoginButton" Content="Login" HorizontalAlignment="Center" Margin="0,190,0,0" VerticalAlignment="Top" Width="80" Click="LoginButton_Click" FontSize="14"/>
+        <Button x:Name="LoginButton" Content="Login" HorizontalAlignment="Center" Margin="0,190,0,0" VerticalAlignment="Top" Width="80" FontSize="14" Click="LoginButton_Click"/>
         <TextBlock x:Name="StatusTextBlock" HorizontalAlignment="Center" Margin="0,220,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TextAlignment="Center"/>
 
     </Grid>

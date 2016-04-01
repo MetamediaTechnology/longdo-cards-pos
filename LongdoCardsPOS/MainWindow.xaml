@@ -5,30 +5,44 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LongdoCardsPOS"
         mc:Ignorable="d"
-        Title="Longdo Cards POS" Height="600" Width="800" WindowStartupLocation="CenterScreen">
+        Title="Longdo Cards POS" Height="600" Width="800" WindowStartupLocation="CenterScreen" MinWidth="480" MinHeight="360">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock x:Name="CardTextBlock" HorizontalAlignment="Left" Margin="20,10,0,0" TextWrapping="Wrap" Text="Loading..." VerticalAlignment="Top" FontSize="16"/>
+        <TextBlock x:Name="CardTextBlock" HorizontalAlignment="Left" Margin="20,10,0,0" Text="Loading..." VerticalAlignment="Top" FontSize="16"/>
+        <Button x:Name="SwitchButton" Content="Switch" HorizontalAlignment="Right" Margin="0,10,75,0" VerticalAlignment="Top" Width="60" FontSize="14" IsTabStop="False" Click="SwitchButton_Click" />
+        <Button x:Name="LogoutButton" Content="Logout" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="60" FontSize="14" IsTabStop="False" Click="LogoutButton_Click" />
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="50*"/>
-                <ColumnDefinition Width="50*"/>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock HorizontalAlignment="Left" Margin="20,15,0,0" TextWrapping="Wrap" Text="Barcode:" VerticalAlignment="Top" FontSize="14"/>
-            <TextBox x:Name="BarcodeBox" HorizontalAlignment="Left" Margin="80,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14" KeyUp="BarcodeBox_KeyUp"/>
-            <TextBlock HorizontalAlignment="Left" Margin="20,40,0,0" TextWrapping="Wrap" Text="Phone:" VerticalAlignment="Top" FontSize="14"/>
-            <TextBox x:Name="PhoneBox" HorizontalAlignment="Left" Margin="80,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" FontSize="14" KeyUp="PhoneBox_KeyUp"/>
-            <Button x:Name="FindButton" Content="Find" HorizontalAlignment="Left" Margin="210,15,0,0" VerticalAlignment="Top" Width="45" Height="45" FontSize="14" Click="FindButton_Click"/>
+            <TextBlock HorizontalAlignment="Left" Margin="20,15,0,0" Text="Barcode:" VerticalAlignment="Top" FontSize="14"/>
+            <TextBox x:Name="BarcodeBox" HorizontalAlignment="Left" Margin="80,15,0,0" VerticalAlignment="Top" Width="155" FontSize="14" KeyUp="BarcodeBox_KeyUp"/>
+            <TextBlock HorizontalAlignment="Left" Margin="20,40,0,0" Text="Phone:" VerticalAlignment="Top" FontSize="14"/>
+            <TextBox x:Name="PhoneBox" HorizontalAlignment="Left" Margin="80,40,0,0" VerticalAlignment="Top" Width="155" FontSize="14" KeyUp="PhoneBox_KeyUp"/>
+            <Button x:Name="FindButton" Content="Find" HorizontalAlignment="Left" Margin="245,15,0,0" VerticalAlignment="Top" Width="45" Height="45" FontSize="14" Click="FindButton_Click"/>
 
-            <ListView x:Name="RewardListView" Grid.Column="1" HorizontalAlignment="Stretch" Margin="10,10,10,10" VerticalAlignment="Stretch">
+            <TextBlock x:Name="CustomerTextBlock" HorizontalAlignment="Left" Margin="20,80,0,0" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="20,110,0,0" Text="Name:" VerticalAlignment="Top" FontSize="14"/>
+            <TextBlock x:Name="NameTextBlock" HorizontalAlignment="Left" Margin="80,110,0,0" Text="..." VerticalAlignment="Top" FontSize="14"/>
+            <TextBlock HorizontalAlignment="Left" Margin="20,135,0,0" Text="Expire:" VerticalAlignment="Top" FontSize="14"/>
+            <TextBlock x:Name="ExpireTextBlock" HorizontalAlignment="Left" Margin="80,135,0,0" Text="..." VerticalAlignment="Top" FontSize="14"/>
+            <TextBlock HorizontalAlignment="Left" Margin="20,160,0,0" Text="Point:" VerticalAlignment="Top" FontSize="14"/>
+            <TextBlock x:Name="PointTextBlock" HorizontalAlignment="Left" Margin="80,160,0,0" Text="..." VerticalAlignment="Top" FontSize="14"/>
+            <TextBox x:Name="PointBox" HorizontalAlignment="Left" Margin="80,185,0,0" VerticalAlignment="Top" Width="155" FontSize="14" KeyUp="PointBox_KeyUp" />
+            <Button x:Name="AddPointButton" Content="Add" HorizontalAlignment="Left" Margin="80,210,0,0" VerticalAlignment="Top" Width="70" Height="30" FontSize="14" Background="LightGreen" Click="AddPointButton_Click"/>
+            <Button x:Name="UsePointButton" Content="Use" HorizontalAlignment="Left" Margin="165,210,0,0" VerticalAlignment="Top" Width="70" Height="30" FontSize="14" Background="LightPink" Click="UsePointButton_Click"/>
+            <TextBlock x:Name="StatusTextBlock" HorizontalAlignment="Center" Margin="0,250,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+
+            <ListView x:Name="RewardListView" Grid.Column="1" HorizontalAlignment="Stretch" Margin="10,10,10,10" VerticalAlignment="Stretch" SelectionChanged="RewardListView_SelectionChanged">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <WrapPanel>
-                            <TextBlock Text="{Binding Amount}" Margin="0,0,10,0" FontWeight="Bold" Width="60" FontSize="16" TextAlignment="Right"/>
+                            <TextBlock Text="{Binding Amount}" Margin="0,0,10,0" Width="60" FontSize="16" FontWeight="Bold" TextAlignment="Right"/>
                             <TextBlock Text="{Binding Name}" FontSize="16"/>
                         </WrapPanel>
                     </DataTemplate>

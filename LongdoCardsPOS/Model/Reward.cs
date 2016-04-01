@@ -19,7 +19,7 @@ namespace LongdoCardsPOS.Model
             {
                 Id = dict.String("reward_id"),
                 Name = dict.String("name"),
-                Amount = dict.String("display_amount"),
+                Amount = dict.String("point_amount").Substring(1),
             };
         }
     }

@@ -51,6 +51,7 @@ namespace LongdoCardsPOS.Controller
         {
             Request("merchantjson/get_customer_info", new NameValueCollection
             {
+                /*test*/{ "cuid", barcode },
                 { "barcode", barcode },
                 { "phone", phone },
                 { "card_id", Settings.Default.CardId },
@@ -73,15 +74,17 @@ namespace LongdoCardsPOS.Controller
                 { "card_id", Settings.Default.CardId },
                 { "cuid", cuid },
                 { "point", point },
+                { "remark", "POS" },
             }, action);
         }
 
-        public static void UsePoint(string cuid, string ppid, Callback action)
+        public static void UsePoint(string cuid, string point, string ppid, Callback action)
         {
             Request("merchantjson/add_customer_point", new NameValueCollection
             {
                 { "card_id", Settings.Default.CardId },
                 { "cuid", cuid },
+                { "point", point },
                 { "pp_id", ppid },
             }, action);
         }

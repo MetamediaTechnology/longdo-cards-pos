@@ -1,0 +1,1 @@
+﻿Require .NET 4.0, Windows XP

@@ -45,5 +45,10 @@ namespace LongdoCardsPOS.Controller
             Settings.Default.Uuid = uuid;
             Settings.Default.Save();
         }
+
+        public static DateTime DateTimeFromTimestamp(int timestamp)
+        {
+            return new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(timestamp).ToLocalTime();
+        }
     }
 }
