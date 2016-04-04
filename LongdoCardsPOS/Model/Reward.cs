@@ -11,6 +11,7 @@ namespace LongdoCardsPOS.Model
         public string Id { get; set; }
         public string Name { get; set; }
         public string Amount { get; set; }
+        public string DisplayAmount { get; set; }
 
         public static Reward FromDict(object data)
         {
@@ -19,7 +20,8 @@ namespace LongdoCardsPOS.Model
             {
                 Id = dict.String("reward_id"),
                 Name = dict.String("name"),
-                Amount = dict.String("point_amount").Substring(1),
+                Amount = dict.String("point_amount"),
+                DisplayAmount = dict.String("display_amount"),
             };
         }
     }

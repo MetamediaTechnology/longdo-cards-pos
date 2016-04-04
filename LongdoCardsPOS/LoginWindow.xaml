@@ -5,15 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LongdoCardsPOS"
         mc:Ignorable="d"
-        Title="" Height="300" Width="200" ResizeMode="CanMinimize" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen">
+        Title="" Height="360" Width="300" FontSize="20" ResizeMode="CanMinimize" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen">
     <Grid>
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Center" Margin="0,20,0,0" Text="Longdo Cards POS" VerticalAlignment="Top" FontWeight="Bold" FontSize="18"/>
-        <TextBlock HorizontalAlignment="Left" Margin="20,70,0,0" Text="Usename" VerticalAlignment="Top" FontSize="14"/>
-        <TextBox x:Name="UsernameBox" HorizontalAlignment="Center" Margin="0,90,0,0" VerticalAlignment="Top" Width="150" FontSize="14" KeyUp="UsernameBox_KeyUp"/>
-        <TextBlock HorizontalAlignment="Left" Margin="20,130,0,0" Text="Password" VerticalAlignment="Top" FontSize="14"/>
-        <PasswordBox x:Name="PasswordBox" HorizontalAlignment="Center" Margin="0,150,0,0" VerticalAlignment="Top" Width="150" FontSize="14" KeyUp="PasswordBox_KeyUp"/>
-        <Button x:Name="LoginButton" Content="Login" HorizontalAlignment="Center" Margin="0,190,0,0" VerticalAlignment="Top" Width="80" FontSize="14" Click="LoginButton_Click"/>
-        <TextBlock x:Name="StatusTextBlock" HorizontalAlignment="Center" Margin="0,220,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TextAlignment="Center"/>
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Center" Margin="0,20,0,0" Text="Longdo Cards POS" VerticalAlignment="Top" FontWeight="Bold" FontSize="24"/>
+        <TextBlock HorizontalAlignment="Left" Margin="20,60,0,0" Text="Usename" VerticalAlignment="Top"/>
+        <TextBox x:Name="UsernameBox" Margin="20,90,20,0" VerticalAlignment="Top" KeyUp="UsernameBox_KeyUp"/>
+        <TextBlock HorizontalAlignment="Left" Margin="20,120,0,0" Text="Password" VerticalAlignment="Top"/>
+        <PasswordBox x:Name="PasswordBox" Margin="20,150,20,0" VerticalAlignment="Top" KeyUp="PasswordBox_KeyUp"/>
+        <Button x:Name="LoginButton" Content="Login" HorizontalAlignment="Center" Margin="0,190,0,0" VerticalAlignment="Top" Width="100" Click="LoginButton_Click"/>
+        <TextBlock x:Name="StatusTextBlock" Margin="20,225,20,0" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center"/>
 
     </Grid>
 </Window>

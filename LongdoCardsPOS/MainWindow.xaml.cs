@@ -32,6 +32,7 @@ namespace LongdoCardsPOS
             BarcodeBox.Focus();
             LoadCard();
 #if DEBUG
+            Title += " DEV";
             BarcodeBox.Text = "92528";
 #endif
         }
@@ -46,10 +47,13 @@ namespace LongdoCardsPOS
 
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
-            Service.Logout();
-            Util.Logout();
-            new LoginWindow().Show();
-            Close();
+            if (MessageBox.Show("Logout?", string.Empty, MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+            {
+                Service.Logout();
+                Util.Logout();
+                new LoginWindow().Show();
+                Close();
+            }
         }
 
         private void BarcodeBox_KeyUp(object sender, KeyEventArgs e)
@@ -119,7 +123,12 @@ namespace LongdoCardsPOS
             {
                 if (error == null)
                 {
-                    PointTextBlock.Text = data.ToDict().Dict("point").String("now");
+                    int point;
+                    int.TryParse(PointTextBlock.Text, out point);
+                    int amount;
+                    int.TryParse(reward.Amount, out amount);
+
+                    PointTextBlock.Text = (point + amount).ToString();
 
                     StatusTextBlock.Text = "Completed!";
                     StatusTextBlock.Foreground = Brushes.Green;
@@ -202,7 +211,7 @@ namespace LongdoCardsPOS
         {
             CustomerTextBlock.Text = "Loading...";
             CustomerTextBlock.Foreground = Brushes.Gray;
-            CustomerTextBlock.FontSize = 12;
+            CustomerTextBlock.FontSize = 16;
 
             NameTextBlock.Text = "...";
             ExpireTextBlock.Text = "...";
@@ -215,9 +224,9 @@ namespace LongdoCardsPOS
             {
                 if (error == null)
                 {
-                    CustomerTextBlock.Text = "Customer Info";
+                    CustomerTextBlock.Text = "-- Customer Info ------------";
                     CustomerTextBlock.Foreground = Brushes.Black;
-                    CustomerTextBlock.FontSize = 16;
+                    CustomerTextBlock.FontSize = FontSize;
 
                     var dict = data.ToDict();
                     var user = dict.Dict("user");
@@ -236,7 +245,7 @@ namespace LongdoCardsPOS
                 {
                     CustomerTextBlock.Text = error;
                     CustomerTextBlock.Foreground = Brushes.Red;
-                    CustomerTextBlock.FontSize = 12;
+                    CustomerTextBlock.FontSize = 16;
                 }
             });
         }
