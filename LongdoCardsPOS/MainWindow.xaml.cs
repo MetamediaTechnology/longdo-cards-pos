@@ -22,7 +22,7 @@ namespace LongdoCardsPOS
     /// </summary>
     public partial class MainWindow : Window
     {
-        private string cuid;
+        private User user;
         private Reward reward;
 
         public MainWindow()
@@ -33,7 +33,7 @@ namespace LongdoCardsPOS
             LoadCard();
 #if DEBUG
             Title += " DEV";
-            BarcodeBox.Text = "92528";
+            BarcodeBox.Text = "9999999999999999";
 #endif
         }
 
@@ -64,14 +64,6 @@ namespace LongdoCardsPOS
             }
         }
 
-        private void PhoneBox_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                LoadCustomer();
-            }
-        }
-
         private void FindButton_Click(object sender, RoutedEventArgs e)
         {
             LoadCustomer();
@@ -92,7 +84,7 @@ namespace LongdoCardsPOS
             int point;
             if (int.TryParse(PointBox.Text, out point))
             {
-                Service.AddPoint(cuid, PointBox.Text, (error, data) =>
+                Service.AddPoint(user.Id, PointBox.Text, (error, data) =>
                 {
                     if (error == null)
                     {
@@ -118,8 +110,14 @@ namespace LongdoCardsPOS
         private void UsePointButton_Click(object sender, RoutedEventArgs e)
         {
             if (!CheckCustomer()) return;
+            if (reward == null)
+            {
+                StatusTextBlock.Text = "No reward selected";
+                StatusTextBlock.Foreground = Brushes.Red;
+                return;
+            }
 
-            Service.UsePoint(cuid, reward.Amount, reward.Id, (error, data) =>
+            Service.UsePoint(user.Id, reward, (error, data) =>
             {
                 if (error == null)
                 {
@@ -139,6 +137,16 @@ namespace LongdoCardsPOS
                     StatusTextBlock.Foreground = Brushes.Red;
                 }
             });
+        }
+
+        private void SubscribeButton_Click(object sender, RoutedEventArgs e)
+        {
+            var edit = new EditWindow(user);
+            edit.Closed += (sender2, e2) =>
+            {
+                NameTextBlock.Text = user.Fname + " " + user.Lname;
+            };
+            edit.ShowDialog();
         }
 
         private void RewardListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -209,6 +217,8 @@ namespace LongdoCardsPOS
 
         private void LoadCustomer()
         {
+            user = null;
+
             CustomerTextBlock.Text = "Loading...";
             CustomerTextBlock.Foreground = Brushes.Gray;
             CustomerTextBlock.FontSize = 16;
@@ -217,21 +227,22 @@ namespace LongdoCardsPOS
             ExpireTextBlock.Text = "...";
             PointTextBlock.Text = "...";
             PointBox.Text = string.Empty;
+            SubscribeButton.Content = "Subscribe";
             StatusTextBlock.Text = string.Empty;
             RewardListView.SelectedItem = null;
 
-            Service.GetCustomer(BarcodeBox.Text, PhoneBox.Text, (error, data) =>
+            Service.GetCustomer(BarcodeBox.Text, (error, data) =>
             {
                 if (error == null)
                 {
-                    CustomerTextBlock.Text = "-- Customer Info ------------";
+                    BarcodeBox.Text = string.Empty;
+                    CustomerTextBlock.Text = "Customer Info ---------------";
                     CustomerTextBlock.Foreground = Brushes.Black;
                     CustomerTextBlock.FontSize = FontSize;
 
                     var dict = data.ToDict();
-                    var user = dict.Dict("user");
-                    cuid = user.String("uid");
-                    NameTextBlock.Text = user.String("username");
+                    user = User.FromDict(dict["user_info"]);
+                    NameTextBlock.Text = user.Fname + " " + user.Lname;
 
                     int timestamp;
                     int.TryParse(dict.Dict("card").String("expired"), out timestamp);
@@ -240,6 +251,7 @@ namespace LongdoCardsPOS
                     var expire = (time - DateTime.Now).TotalDays;
                     ExpireTextBlock.Foreground = expire < 0 ? Brushes.Red : expire < 30 ? Brushes.Orange : Brushes.Black;
                     PointTextBlock.Text = dict.Dict("point").String("now");
+                    SubscribeButton.Content = "Edit";
                 }
                 else
                 {
@@ -252,7 +264,7 @@ namespace LongdoCardsPOS
 
         private bool CheckCustomer()
         {
-            if (string.IsNullOrEmpty(cuid))
+            if (user == null)
             {
                 StatusTextBlock.Text = "No customer";
                 StatusTextBlock.Foreground = Brushes.Red;

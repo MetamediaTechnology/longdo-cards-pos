@@ -9,6 +9,7 @@ using System.Web.Script.Serialization;
 
 namespace LongdoCardsPOS.Controller
 {
+    using Model;
     using Callback = Action<string, object>;
 
     class Service
@@ -40,52 +41,67 @@ namespace LongdoCardsPOS.Controller
 
         public static void GetRewards(Callback action)
         {
-            /*dev*///merchantjson/get_rewards
-            Request("clientjson/v2_get_rewards", new NameValueCollection
+            Request("merchantjson/get_rewards", new NameValueCollection
             {
                 { "card_id", Settings.Default.CardId },
             }, action);
         }
 
-        public static void GetCustomer(string barcode, string phone, Callback action)
+        public static void SubscribeCustomer(string serial, string barcode, User user, Callback action)
+        {
+            Request("merchantjson/subscribe_by_unregistered_card", new NameValueCollection
+            {
+                { "card_id", Settings.Default.CardId },
+                { "serial", serial },
+                { "barcode", barcode },
+                { "mobile", user.Mobile },
+                { "fname", user.Fname },
+                { "lname", user.Lname },
+                { "gender", user.Gender },
+            }, action);
+        }
+
+        public static void GetCustomer(string plasticId, Callback action)
         {
             Request("merchantjson/get_customer_info", new NameValueCollection
             {
-                /*dev*/{ "cuid", barcode },
-                { "barcode", barcode },
-                { "phone", phone },
                 { "card_id", Settings.Default.CardId },
+                { "plastic_ident", plasticId },
             }, action);
         }
 
-        public static void UpdateCustomer(string cuid, string phone, Callback action)
+        public static void SetCustomer(User user, Callback action)
         {
-            Request("merchantjson/update_customer_info", new NameValueCollection
+            Request("merchantjson/set_plastic_profile", new NameValueCollection
             {
-                { "cuid", cuid },
-                { "phone", phone },
+                { "card_id", Settings.Default.CardId },
+                { "pcard_id", user.Id },
+                { "mobile", user.Mobile },
+                { "fname", user.Fname },
+                { "lname", user.Lname },
+                { "gender", user.Gender },
             }, action);
         }
 
-        public static void AddPoint(string cuid, string point, Callback action)
+        public static void AddPoint(string pcardId, string point, Callback action)
         {
             Request("merchantjson/add_customer_point", new NameValueCollection
             {
                 { "card_id", Settings.Default.CardId },
-                { "cuid", cuid },
+                { "pcard_id", pcardId },
                 { "point", point },
                 { "remark", "POS" },
             }, action);
         }
 
-        public static void UsePoint(string cuid, string point, string ppid, Callback action)
+        public static void UsePoint(string pcardId, Reward reward, Callback action)
         {
             Request("merchantjson/use_customer_point", new NameValueCollection
             {
                 { "card_id", Settings.Default.CardId },
-                { "cuid", cuid },
-                { "point", point },
-                { "pp_id", ppid },
+                { "pcard_id", pcardId },
+                { "point", reward.Amount },
+                { "pp_id", reward.Id },
             }, action);
         }
 
