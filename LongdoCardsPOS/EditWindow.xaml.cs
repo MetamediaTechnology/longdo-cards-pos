@@ -29,7 +29,7 @@ namespace LongdoCardsPOS
             if (user == null)
             {
                 user = new User();
-                Title = "Subcribe Customer";
+                Title = "New Customer";
             }
             else
             {
@@ -58,7 +58,7 @@ namespace LongdoCardsPOS
                     MessageBox.Show("Mobile No. is required");
                     return;
                 }
-                Service.SubscribeCustomer(SerialBox.Text, BarcodeBox.Text, User, (error, data) =>
+                Service.NewCustomer(SerialBox.Text, BarcodeBox.Text, User, (error, data) =>
                 {
                     if (error == null)
                     {
@@ -76,7 +76,7 @@ namespace LongdoCardsPOS
                 {
                     if (error == null)
                     {
-                        MessageBox.Show("Info Updated");
+                        MessageBox.Show("Info updated");
                         Close();
                     }
                     else

@@ -47,7 +47,16 @@ namespace LongdoCardsPOS.Controller
             }, action);
         }
 
-        public static void SubscribeCustomer(string serial, string barcode, User user, Callback action)
+        public static void GetCustomer(string plasticId, Callback action)
+        {
+            Request("merchantjson/get_customer_info", new NameValueCollection
+            {
+                { "card_id", Settings.Default.CardId },
+                { "plastic_ident", plasticId },
+            }, action);
+        }
+
+        public static void NewCustomer(string serial, string barcode, User user, Callback action)
         {
             Request("merchantjson/subscribe_by_unregistered_card", new NameValueCollection
             {
@@ -61,12 +70,13 @@ namespace LongdoCardsPOS.Controller
             }, action);
         }
 
-        public static void GetCustomer(string plasticId, Callback action)
+        public static void SubscribeCustomer(User user, Callback action)
         {
-            Request("merchantjson/get_customer_info", new NameValueCollection
+            Request("merchantjson/add_member", new NameValueCollection
             {
                 { "card_id", Settings.Default.CardId },
-                { "plastic_ident", plasticId },
+                { "pcard_id", user.Id },
+                { "mobile", user.Mobile },
             }, action);
         }
 

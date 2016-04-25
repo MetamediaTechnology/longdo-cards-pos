@@ -77,6 +77,22 @@ namespace LongdoCardsPOS
             }
         }
 
+        private void RenewButton_Click(object sender, RoutedEventArgs e)
+        {
+            Service.SubscribeCustomer(user, (error, data) =>
+            {
+                if (error == null)
+                {
+                    MessageBox.Show("Subscribe completed");
+                    ShowExpire(data);               
+                }
+                else
+                {
+                    MessageBox.Show(error);
+                }
+            });
+        }
+
         private void AddPointButton_Click(object sender, RoutedEventArgs e)
         {
             if (!CheckCustomer()) return;
@@ -139,7 +155,7 @@ namespace LongdoCardsPOS
             });
         }
 
-        private void SubscribeButton_Click(object sender, RoutedEventArgs e)
+        private void EditButton_Click(object sender, RoutedEventArgs e)
         {
             var edit = new EditWindow(user);
             edit.Closed += (sender2, e2) =>
@@ -225,9 +241,11 @@ namespace LongdoCardsPOS
 
             NameTextBlock.Text = "...";
             ExpireTextBlock.Text = "...";
+            ExpireTextBlock.Foreground = Brushes.Black;
+            RenewButton.Visibility = Visibility.Collapsed;
             PointTextBlock.Text = "...";
             PointBox.Text = string.Empty;
-            SubscribeButton.Content = "Subscribe";
+            EditButton.Content = "New card";
             StatusTextBlock.Text = string.Empty;
             RewardListView.SelectedItem = null;
 
@@ -236,7 +254,7 @@ namespace LongdoCardsPOS
                 if (error == null)
                 {
                     BarcodeBox.Text = string.Empty;
-                    CustomerTextBlock.Text = "Customer Info ---------------";
+                    CustomerTextBlock.Text = "__ Customer Info ____________";
                     CustomerTextBlock.Foreground = Brushes.Black;
                     CustomerTextBlock.FontSize = FontSize;
 
@@ -244,14 +262,9 @@ namespace LongdoCardsPOS
                     user = User.FromDict(dict["user_info"]);
                     NameTextBlock.Text = user.Fname + " " + user.Lname;
 
-                    int timestamp;
-                    int.TryParse(dict.Dict("card").String("expired"), out timestamp);
-                    var time = Util.DateTimeFromTimestamp(timestamp);
-                    ExpireTextBlock.Text = time.ToShortDateString();
-                    var expire = (time - DateTime.Now).TotalDays;
-                    ExpireTextBlock.Foreground = expire < 0 ? Brushes.Red : expire < 30 ? Brushes.Orange : Brushes.Black;
+                    ShowExpire(dict["card"]);
                     PointTextBlock.Text = dict.Dict("point").String("now");
-                    SubscribeButton.Content = "Edit";
+                    EditButton.Content = "Edit";
                 }
                 else
                 {
@@ -275,6 +288,33 @@ namespace LongdoCardsPOS
                 StatusTextBlock.Text = "Updating...";
                 StatusTextBlock.Foreground = Brushes.Gray;
                 return true;
+            }
+        }
+
+        private void ShowExpire(object card)
+        {
+            try
+            {
+                int timestamp;
+                int.TryParse(card.ToDict().String("expired"), out timestamp);
+                var time = Util.DateTimeFromTimestamp(timestamp);
+                ExpireTextBlock.Text = time.ToShortDateString();
+                var expire = (time - DateTime.Now).TotalDays;
+                if (expire < 30)
+                {
+                    ExpireTextBlock.Foreground = expire < 0 ? Brushes.Red : Brushes.Orange;
+                    RenewButton.Content = "Renew";
+                    RenewButton.Visibility = Visibility.Visible;
+                } else
+                {
+                    RenewButton.Visibility = Visibility.Collapsed;
+                }
+            }
+            catch (Exception)
+            {
+                ExpireTextBlock.Text = "N/A";
+                RenewButton.Content = "Subscribe";
+                RenewButton.Visibility = Visibility.Visible;
             }
         }
     }
