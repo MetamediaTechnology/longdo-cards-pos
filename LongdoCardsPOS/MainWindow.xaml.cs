@@ -100,7 +100,7 @@ namespace LongdoCardsPOS
             int point;
             if (int.TryParse(PointBox.Text, out point))
             {
-                Service.AddPoint(user.Id, PointBox.Text, (error, data) =>
+                Service.AddPoint(user, PointBox.Text, (error, data) =>
                 {
                     if (error == null)
                     {
@@ -133,7 +133,7 @@ namespace LongdoCardsPOS
                 return;
             }
 
-            Service.UsePoint(user.Id, reward, (error, data) =>
+            Service.UsePoint(user, reward, (error, data) =>
             {
                 if (error == null)
                 {
@@ -246,6 +246,7 @@ namespace LongdoCardsPOS
             PointTextBlock.Text = "...";
             PointBox.Text = string.Empty;
             EditButton.Content = "New card";
+            EditButton.IsEnabled = true;
             StatusTextBlock.Text = string.Empty;
             RewardListView.SelectedItem = null;
 
@@ -259,12 +260,21 @@ namespace LongdoCardsPOS
                     CustomerTextBlock.FontSize = FontSize;
 
                     var dict = data.ToDict();
-                    user = User.FromDict(dict["user_info"]);
+                    var isPlastic = dict.String("card_type") == "plastic";
+                    user = User.FromDict(dict["user_info"], isPlastic);
                     NameTextBlock.Text = user.Fname + " " + user.Lname;
 
                     ShowExpire(dict["card"]);
                     PointTextBlock.Text = dict.Dict("point").String("now");
-                    EditButton.Content = "Edit";
+                    if (isPlastic)
+                    {
+                        EditButton.Content = "Edit";
+                    }
+                    else
+                    {
+                        EditButton.Content = "Edit in app";
+                        EditButton.IsEnabled = false;
+                    }
                 }
                 else
                 {

@@ -75,7 +75,7 @@ namespace LongdoCardsPOS.Controller
             Request("merchantjson/add_member", new NameValueCollection
             {
                 { "card_id", Settings.Default.CardId },
-                { "pcard_id", user.Id },
+                { user.Key, user.Id },
                 { "mobile", user.Mobile },
             }, action);
         }
@@ -85,7 +85,7 @@ namespace LongdoCardsPOS.Controller
             Request("merchantjson/set_plastic_profile", new NameValueCollection
             {
                 { "card_id", Settings.Default.CardId },
-                { "pcard_id", user.Id },
+                { user.Key, user.Id },
                 { "mobile", user.Mobile },
                 { "fname", user.Fname },
                 { "lname", user.Lname },
@@ -93,23 +93,23 @@ namespace LongdoCardsPOS.Controller
             }, action);
         }
 
-        public static void AddPoint(string pcardId, string point, Callback action)
+        public static void AddPoint(User user, string point, Callback action)
         {
             Request("merchantjson/add_customer_point", new NameValueCollection
             {
                 { "card_id", Settings.Default.CardId },
-                { "pcard_id", pcardId },
+                { user.Key, user.Id },
                 { "point", point },
                 { "remark", "POS" },
             }, action);
         }
 
-        public static void UsePoint(string pcardId, Reward reward, Callback action)
+        public static void UsePoint(User user, Reward reward, Callback action)
         {
             Request("merchantjson/use_customer_point", new NameValueCollection
             {
                 { "card_id", Settings.Default.CardId },
-                { "pcard_id", pcardId },
+                { user.Key, user.Id },
                 { "point", reward.Amount },
                 { "pp_id", reward.Id },
             }, action);

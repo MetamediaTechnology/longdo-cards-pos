@@ -36,7 +36,7 @@ namespace LongdoCardsPOS.Controller
 
         public static string String(this IDictionary<string, object> data, string key)
         {
-            return data[key].ToString();
+            return data[key]?.ToString();
         }
 
         public static IDictionary<string, object> Dict(this IDictionary<string, object> data, string key)
