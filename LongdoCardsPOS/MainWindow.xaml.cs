@@ -3,6 +3,7 @@ using LongdoCardsPOS.Model;
 using LongdoCardsPOS.Properties;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -31,9 +32,10 @@ namespace LongdoCardsPOS
 
             BarcodeBox.Focus();
             LoadCard();
+
+            Title += FileVersionInfo.GetVersionInfo(Application.ResourceAssembly.Location).ProductVersion;
 #if DEBUG
             Title += " DEV";
-            BarcodeBox.Text = "9999999999999999";
 #endif
         }
 
@@ -160,6 +162,8 @@ namespace LongdoCardsPOS
             var edit = new EditWindow(user);
             edit.Closed += (sender2, e2) =>
             {
+                if (user == null) return;
+
                 NameTextBlock.Text = user.Fname + " " + user.Lname;
             };
             edit.ShowDialog();

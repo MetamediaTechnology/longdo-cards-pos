@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LongdoCardsPOS"
         mc:Ignorable="d"
-        Title="Longdo Cards POS 0.3" Height="600" Width="800" MinWidth="480" MinHeight="360" FontSize="24" WindowStartupLocation="CenterScreen">
+        Title="Longdo Cards POS " Height="600" Width="800" MinWidth="480" MinHeight="360" FontSize="24" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
