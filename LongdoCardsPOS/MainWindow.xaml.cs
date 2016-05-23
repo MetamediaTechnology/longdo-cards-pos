@@ -39,6 +39,21 @@ namespace LongdoCardsPOS
 #endif
         }
 
+        private void TicketButton_Click(object sender, RoutedEventArgs e)
+        {
+            Service.CreateTicket("100", (error, data) =>
+            {
+                if (error == null)
+                {
+                    MessageBox.Show(data.ToDict().String("serial"));
+                }
+                else
+                {
+                    MessageBox.Show(error);
+                }
+            });
+        }
+
         private void SwitchButton_Click(object sender, RoutedEventArgs e)
         {
             CardTextBlock.Text = "Loading...";
@@ -85,12 +100,12 @@ namespace LongdoCardsPOS
             {
                 if (error == null)
                 {
-                    MessageBox.Show("Subscribe completed");
+                    Status("Subscribe completed", Brushes.Green);
                     ShowExpire(data);               
                 }
                 else
                 {
-                    MessageBox.Show(error);
+                    Status(error);
                 }
             });
         }
@@ -106,22 +121,20 @@ namespace LongdoCardsPOS
                 {
                     if (error == null)
                     {
+                        PointBox.Text = string.Empty;
                         PointTextBlock.Text = data.ToDict().Dict("point").String("now");
 
-                        StatusTextBlock.Text = "Completed!";
-                        StatusTextBlock.Foreground = Brushes.Green;
+                        Status("Added " + point + " point", Brushes.Green);
                     }
                     else
                     {
-                        StatusTextBlock.Text = error;
-                        StatusTextBlock.Foreground = Brushes.Red;
+                        Status(error);
                     }
                 });
             }
             else
             {
-                StatusTextBlock.Text = "Invalid point";
-                StatusTextBlock.Foreground = Brushes.Red;
+                Status("Invalid point");
             }
         }
 
@@ -130,8 +143,7 @@ namespace LongdoCardsPOS
             if (!CheckCustomer()) return;
             if (reward == null)
             {
-                StatusTextBlock.Text = "No reward selected";
-                StatusTextBlock.Foreground = Brushes.Red;
+                Status("No reward selected");
                 return;
             }
 
@@ -144,15 +156,15 @@ namespace LongdoCardsPOS
                     int amount;
                     int.TryParse(reward.Amount, out amount);
 
+                    PointBox.Text = string.Empty;
                     PointTextBlock.Text = (point + amount).ToString();
+                    RewardListView.SelectedItem = null;
 
-                    StatusTextBlock.Text = "Completed!";
-                    StatusTextBlock.Foreground = Brushes.Green;
+                    Status("Used " + -amount + " point", Brushes.Green);
                 }
                 else
                 {
-                    StatusTextBlock.Text = error;
-                    StatusTextBlock.Foreground = Brushes.Red;
+                    Status(error);
                 }
             });
         }
@@ -239,10 +251,6 @@ namespace LongdoCardsPOS
         {
             user = null;
 
-            CustomerTextBlock.Text = "Loading...";
-            CustomerTextBlock.Foreground = Brushes.Gray;
-            CustomerTextBlock.FontSize = 16;
-
             NameTextBlock.Text = "...";
             ExpireTextBlock.Text = "...";
             ExpireTextBlock.Foreground = Brushes.Black;
@@ -251,17 +259,21 @@ namespace LongdoCardsPOS
             PointBox.Text = string.Empty;
             EditButton.Content = "New card";
             EditButton.IsEnabled = true;
-            StatusTextBlock.Text = string.Empty;
+            Status("Loading...", Brushes.Gray);
             RewardListView.SelectedItem = null;
+
+            if (string.IsNullOrEmpty(BarcodeBox.Text))
+            {
+                Status("No customer");
+                return;
+            }
 
             Service.GetCustomer(BarcodeBox.Text, (error, data) =>
             {
                 if (error == null)
                 {
                     BarcodeBox.Text = string.Empty;
-                    CustomerTextBlock.Text = "__ Customer Info ____________";
-                    CustomerTextBlock.Foreground = Brushes.Black;
-                    CustomerTextBlock.FontSize = FontSize;
+                    StatusTextBlock.Text = string.Empty;
 
                     var dict = data.ToDict();
                     var isPlastic = dict.String("card_type") == "plastic";
@@ -279,12 +291,11 @@ namespace LongdoCardsPOS
                         EditButton.Content = "Edit in app";
                         EditButton.IsEnabled = false;
                     }
+                    PointBox.Focus();
                 }
                 else
                 {
-                    CustomerTextBlock.Text = error;
-                    CustomerTextBlock.Foreground = Brushes.Red;
-                    CustomerTextBlock.FontSize = 16;
+                    Status(error);
                 }
             });
         }
@@ -293,14 +304,12 @@ namespace LongdoCardsPOS
         {
             if (user == null)
             {
-                StatusTextBlock.Text = "No customer";
-                StatusTextBlock.Foreground = Brushes.Red;
+                Status("No customer");
                 return false;
             }
             else
             {
-                StatusTextBlock.Text = "Updating...";
-                StatusTextBlock.Foreground = Brushes.Gray;
+                Status("Updating...", Brushes.Gray);
                 return true;
             }
         }
@@ -330,6 +339,12 @@ namespace LongdoCardsPOS
                 RenewButton.Content = "Subscribe";
                 RenewButton.Visibility = Visibility.Visible;
             }
+        }
+
+        private void Status(string message, Brush color = null)
+        {
+            StatusTextBlock.Text = message;
+            StatusTextBlock.Foreground = color ?? Brushes.Red;
         }
     }
 }

@@ -115,6 +115,15 @@ namespace LongdoCardsPOS.Controller
             }, action);
         }
 
+        public static void CreateTicket(string amount, Callback action)
+        {
+            Request("merchantjson/create_ticket", new NameValueCollection
+            {
+                { "card_id", Settings.Default.CardId },
+                { "amount", amount },
+            }, action);
+        }
+
         private static void Request(string service, NameValueCollection values, Callback action)
         {
             values.Add("uuid", Settings.Default.Uuid);

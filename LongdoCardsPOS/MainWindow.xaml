@@ -11,9 +11,10 @@
             <RowDefinition Height="60"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock x:Name="CardTextBlock" HorizontalAlignment="Left" Margin="20,10,0,0" Text="Loading..." VerticalAlignment="Top" FontSize="32"/>
+        <TextBlock x:Name="CardTextBlock" HorizontalAlignment="Left" Margin="20,10,240,0" Text="Loading..." VerticalAlignment="Top" FontSize="32"/>
         <StackPanel HorizontalAlignment="Right" Margin="0,10,10,0" Grid.RowSpan="2" VerticalAlignment="Top" Orientation="Horizontal">
-            <Button x:Name="SwitchButton" Content="Switch" HorizontalAlignment="Left" Margin="0,0,0,0" Width="60" FontSize="16" IsTabStop="False" Click="SwitchButton_Click" />
+            <Button x:Name="TicketButton" Content="Ticket" HorizontalAlignment="Left" Margin="10,0,0,0" Width="60" FontSize="16" IsTabStop="False" Click="TicketButton_Click" />
+            <Button x:Name="SwitchButton" Content="Switch" HorizontalAlignment="Left" Margin="10,0,0,0" Width="60" FontSize="16" IsTabStop="False" Click="SwitchButton_Click" />
             <Button x:Name="LogoutButton" Content="Logout" HorizontalAlignment="Left" Margin="10,0,0,0" Width="60" FontSize="16" IsTabStop="False" Click="LogoutButton_Click" />
         </StackPanel>
 
@@ -44,9 +45,9 @@
                 <TextBox x:Name="BarcodeBox" Grid.Column="1" VerticalAlignment="Top" KeyUp="BarcodeBox_KeyUp"/>
                 <Button x:Name="FindButton" Grid.Row="1" Grid.Column="1" Content="Find" Click="FindButton_Click"/>
 
-                <TextBlock x:Name="CustomerTextBlock" Grid.Row="2" Grid.ColumnSpan="3" VerticalAlignment="Bottom"/>
+                <TextBlock Grid.Row="2" Grid.ColumnSpan="3" Text="__ Customer Info ____________" VerticalAlignment="Bottom"/>
                 <TextBlock Grid.Row="3" Text="Name:"/>
-                <TextBlock x:Name="NameTextBlock" Grid.Row="3" Grid.Column="1" Text="..." VerticalAlignment="Top"/>
+                <TextBlock x:Name="NameTextBlock" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Text="..." VerticalAlignment="Top"/>
                 <TextBlock Grid.Row="4" Text="Expire:"/>
                 <TextBlock x:Name="ExpireTextBlock" Grid.Row="4" Grid.Column="1" Text="..."/>
                 <Button x:Name="RenewButton" Grid.Row="4" Grid.Column="1" Content="Renew" HorizontalAlignment="Right" Background="LightCyan" Visibility="Hidden" Padding="8,0" Click="RenewButton_Click" />

@@ -34,6 +34,7 @@ namespace LongdoCardsPOS
             else
             {
                 CodeGrid.Visibility = Visibility.Collapsed;
+                Height -= 90;
             }
             DataContext = this;
             User = user;
@@ -41,23 +42,20 @@ namespace LongdoCardsPOS
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            var validate = Validate();
+            if (string.IsNullOrEmpty(validate))
+            {
+                Status("Loading...", Brushes.Gray);
+            }
+            else
+            {
+                Status(validate);
+                return;
+            }
+
+
             if (string.IsNullOrEmpty(User.Id))
             {
-                if (string.IsNullOrEmpty(SerialBox.Text))
-                {
-                    MessageBox.Show("Serial is required");
-                    return;
-                }
-                if (string.IsNullOrEmpty(BarcodeBox.Text))
-                {
-                    MessageBox.Show("Barcode is required");
-                    return;
-                }
-                if (string.IsNullOrEmpty(User.Mobile))
-                {
-                    MessageBox.Show("Mobile No. is required");
-                    return;
-                }
                 Service.NewCustomer(SerialBox.Text, BarcodeBox.Text, User, (error, data) =>
                 {
                     if (error == null)
@@ -67,10 +65,11 @@ namespace LongdoCardsPOS
                     }
                     else
                     {
-                        MessageBox.Show(error);
+                        Status(error);
                     }
                 });
-            } else
+            }
+            else
             {
                 Service.SetCustomer(User, (error, data) =>
                 {
@@ -81,10 +80,29 @@ namespace LongdoCardsPOS
                     }
                     else
                     {
-                        MessageBox.Show(error);
+                        Status(error);
                     }
                 });
             }
+        }
+
+        private string Validate()
+        {
+            if (string.IsNullOrEmpty(User.Id))
+            {
+                if (string.IsNullOrEmpty(SerialBox.Text)) return "Serial is required";
+                if (string.IsNullOrEmpty(BarcodeBox.Text)) return "Barcode is required";
+            }
+
+            if (string.IsNullOrEmpty(User.Mobile)) return "Mobile no. is required";
+
+            return null;
+        }
+
+        private void Status(string message, Brush color = null)
+        {
+            StatusTextBlock.Text = message;
+            StatusTextBlock.Foreground = color ?? Brushes.Red;
         }
     }
 }
