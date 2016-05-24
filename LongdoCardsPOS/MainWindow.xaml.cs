@@ -39,27 +39,17 @@ namespace LongdoCardsPOS
 #endif
         }
 
-        private void TicketButton_Click(object sender, RoutedEventArgs e)
-        {
-            Service.CreateTicket("100", (error, data) =>
-            {
-                if (error == null)
-                {
-                    MessageBox.Show(data.ToDict().String("serial"));
-                }
-                else
-                {
-                    MessageBox.Show(error);
-                }
-            });
-        }
-
         private void SwitchButton_Click(object sender, RoutedEventArgs e)
         {
             CardTextBlock.Text = "Loading...";
             var cardId = Settings.Default.CardId;
             Settings.Default.CardId = null;
             LoadCard(cardId);
+        }
+
+        private void TicketButton_Click(object sender, RoutedEventArgs e)
+        {
+            new TicketWindow().Show();
         }
 
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
