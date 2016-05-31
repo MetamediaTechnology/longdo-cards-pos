@@ -247,7 +247,7 @@ namespace LongdoCardsPOS
             RenewButton.Visibility = Visibility.Collapsed;
             PointTextBlock.Text = "...";
             PointBox.Text = string.Empty;
-            EditButton.Content = "New card";
+            EditButton.Content = "New customer";
             EditButton.IsEnabled = true;
             Status("Loading...", Brushes.Gray);
             RewardListView.SelectedItem = null;
@@ -274,7 +274,7 @@ namespace LongdoCardsPOS
                     PointTextBlock.Text = dict.Dict("point").String("now");
                     if (isPlastic)
                     {
-                        EditButton.Content = "Edit";
+                        EditButton.Content = "Edit customer";
                     }
                     else
                     {
