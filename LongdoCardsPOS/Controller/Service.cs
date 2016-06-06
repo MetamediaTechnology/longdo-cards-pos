@@ -22,7 +22,7 @@ namespace LongdoCardsPOS.Controller
 
         public static void Login(string user, string pass, Callback action)
         {
-            Request("login", new NameValueCollection
+            Request("main/login", new NameValueCollection
             {
                 { "user", user },
                 { "pass", pass.Md5() },
@@ -31,17 +31,17 @@ namespace LongdoCardsPOS.Controller
 
         public static void Logout()
         {
-            Request("logout", new NameValueCollection(), (error, data) => { });
+            Request("main/logout", new NameValueCollection(), (error, data) => { });
         }
 
         public static void GetCards(Callback action)
         {
-            Request("get_cards", new NameValueCollection(), action);
+            Request("main/get_cards", new NameValueCollection(), action);
         }
 
         public static void GetRewards(Callback action)
         {
-            Request("get_rewards", new NameValueCollection
+            Request("main/get_rewards", new NameValueCollection
             {
                 { "card_id", Settings.Default.CardId },
             }, action);
@@ -49,7 +49,7 @@ namespace LongdoCardsPOS.Controller
 
         public static void GetCustomer(string plasticId, Callback action)
         {
-            Request("get_customer_info", new NameValueCollection
+            Request("main/get_customer_info", new NameValueCollection
             {
                 { "card_id", Settings.Default.CardId },
                 { "plastic_ident", plasticId },
@@ -58,7 +58,7 @@ namespace LongdoCardsPOS.Controller
 
         public static void NewCustomer(string serial, string barcode, User user, Callback action)
         {
-            Request("subscribe_by_unregistered_card", new NameValueCollection
+            Request("main/subscribe_by_unregistered_card", new NameValueCollection
             {
                 { "card_id", Settings.Default.CardId },
                 { "serial", serial },
@@ -72,7 +72,7 @@ namespace LongdoCardsPOS.Controller
 
         public static void SubscribeCustomer(User user, Callback action)
         {
-            Request("add_member", new NameValueCollection
+            Request("main/add_member", new NameValueCollection
             {
                 { "card_id", Settings.Default.CardId },
                 { user.Key, user.Id },
@@ -82,7 +82,7 @@ namespace LongdoCardsPOS.Controller
 
         public static void SetCustomer(User user, Callback action)
         {
-            Request("set_plastic_profile", new NameValueCollection
+            Request("main/set_plastic_profile", new NameValueCollection
             {
                 { "card_id", Settings.Default.CardId },
                 { user.Key, user.Id },
@@ -95,7 +95,7 @@ namespace LongdoCardsPOS.Controller
 
         public static void AddPoint(User user, string point, Callback action)
         {
-            Request("add_customer_point", new NameValueCollection
+            Request("points/add_customer_point", new NameValueCollection
             {
                 { "card_id", Settings.Default.CardId },
                 { user.Key, user.Id },
@@ -106,7 +106,7 @@ namespace LongdoCardsPOS.Controller
 
         public static void UsePoint(User user, Reward reward, Callback action)
         {
-            Request("use_customer_point", new NameValueCollection
+            Request("points/use_customer_point", new NameValueCollection
             {
                 { "card_id", Settings.Default.CardId },
                 { user.Key, user.Id },
@@ -117,7 +117,7 @@ namespace LongdoCardsPOS.Controller
 
         public static void CreateTicket(string amount, Callback action)
         {
-            Request("create_ticket", new NameValueCollection
+            Request("points/create_ticket", new NameValueCollection
             {
                 { "card_id", Settings.Default.CardId },
                 { "amount", amount },
@@ -132,7 +132,7 @@ namespace LongdoCardsPOS.Controller
 
             var client = new WebClient();
             client.UploadValuesCompleted += (s, e) => Response(e, action);
-            client.UploadValuesAsync(new Uri(CARD_SERVER + "/api/pointofsale/" + service), values);
+            client.UploadValuesAsync(new Uri(CARD_SERVER + "/api/" + service), values);
         }
 
         private static void Response(UploadValuesCompletedEventArgs e, Callback action)
