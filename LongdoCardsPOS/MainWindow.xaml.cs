@@ -114,7 +114,7 @@ namespace LongdoCardsPOS
                         PointBox.Text = string.Empty;
                         PointTextBlock.Text = data.ToDict().Dict("point").String("now");
 
-                        Status("Added " + point + " point", Brushes.Green);
+                        Status("Added " + string.Format("{0:n0}", point) + " point", Brushes.Green);
                     }
                     else
                     {
@@ -150,7 +150,7 @@ namespace LongdoCardsPOS
                     PointTextBlock.Text = (point + amount).ToString();
                     RewardListView.SelectedItem = null;
 
-                    Status("Used " + -amount + " point", Brushes.Green);
+                    Status("Used " + string.Format("{0:n0}", -amount) + " point", Brushes.Green);
                 }
                 else
                 {

@@ -82,7 +82,7 @@ namespace LongdoCardsPOS.Controller
 
         public static void SetCustomer(User user, Callback action)
         {
-            Request("main/set_plastic_profile", new NameValueCollection
+            Request("main/set_customer_profile", new NameValueCollection
             {
                 { "card_id", Settings.Default.CardId },
                 { user.Key, user.Id },
