@@ -14,11 +14,7 @@ namespace LongdoCardsPOS.Controller
 
     class Service
     {
-#if DEBUG
-        public const string CARD_SERVER = "https://card-test.longdo.com/";
-#else
-        public const string CARD_SERVER = "https://card.longdo.com/";
-#endif
+        public const string CARD_SERVER = "https://cards.longdo.com/";
 
         public static void Login(string user, string pass, Callback action)
         {
