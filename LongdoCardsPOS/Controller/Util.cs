@@ -6,7 +6,7 @@ using System.Management;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LongdoCardsPOS.Controller
+namespace LongdoCardsPOS
 {
     class Util
     {
@@ -34,7 +34,7 @@ namespace LongdoCardsPOS.Controller
 
         public static void Login(object data)
         {
-            Settings.Default.Token = data.ToDict().String("token");
+            Settings.Default.Token = data.ToDict().String("token"); // TODO: Use ProtectedData Class
             Settings.Default.Save();
         }
 

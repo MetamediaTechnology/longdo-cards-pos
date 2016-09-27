@@ -1,10 +1,9 @@
-﻿using LongdoCardsPOS.Controller;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace LongdoCardsPOS.Model
+namespace LongdoCardsPOS
 {
     public class Reward
     {

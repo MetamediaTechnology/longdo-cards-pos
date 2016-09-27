@@ -1,9 +1,6 @@
-﻿using LongdoCardsPOS.Controller;
-using LongdoCardsPOS.Model;
-using LongdoCardsPOS.Properties;
+﻿using LongdoCardsPOS.Properties;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -13,7 +10,6 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace LongdoCardsPOS
@@ -33,10 +29,7 @@ namespace LongdoCardsPOS
             BarcodeBox.Focus();
             LoadCard();
 
-            Title += FileVersionInfo.GetVersionInfo(Application.ResourceAssembly.Location).ProductVersion;
-#if DEBUG
-            Title += " DEV";
-#endif
+            Title += Config.Version;
         }
 
         private void SwitchButton_Click(object sender, RoutedEventArgs e)
@@ -49,7 +42,7 @@ namespace LongdoCardsPOS
 
         private void TicketButton_Click(object sender, RoutedEventArgs e)
         {
-            new TicketWindow().Show();
+            new TicketWindow().ShowDialog();
         }
 
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
@@ -225,7 +218,7 @@ namespace LongdoCardsPOS
                     {
                         if (data == null) return;
 
-                        Settings.Default.Rewards = data.ToArray().Select(x => Reward.FromDict(x)).ToArray();
+                        Settings.Default.Rewards = data.ToArray().Select(x => Reward.FromDict(x)).ToArray<Reward>();
                         Settings.Default.Save();
                     }
                     LoadRewards();

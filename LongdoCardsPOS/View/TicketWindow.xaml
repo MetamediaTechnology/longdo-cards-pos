@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LongdoCardsPOS"
         mc:Ignorable="d"
-        Title="Ticket" Height="160" Width="320" FontSize="24" ShowInTaskbar="False" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="Ticket" Height="220" Width="320" FontSize="24" ShowInTaskbar="False" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid Margin="10,10,10,10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100"/>
@@ -14,10 +14,14 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBlock Text="Amount:"/>
         <TextBox x:Name="AmountBox" Grid.Column="1" VerticalAlignment="Top" />
-        <Button x:Name="PrintButton" Grid.Row="4" Grid.Column="1" Content="Print" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top" Click="PrintButton_Click"/>
-
+        <TextBlock Text="Remark:" Grid.Row="1" />
+        <TextBox x:Name="RemarkBox" Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" />
+        <Button x:Name="PrintButton" Grid.Row="2" Grid.Column="1" Content="Print" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top" Click="PrintButton_Click"/>
+        <TextBlock x:Name="StatusTextBlock" Grid.Row="3" Grid.ColumnSpan="2" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center"/>
     </Grid>
 </Window>

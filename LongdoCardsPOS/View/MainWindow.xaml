@@ -57,7 +57,7 @@
                 <Button x:Name="AddPointButton" Grid.Row="7" Grid.Column="1" Content="Add" HorizontalAlignment="Left" Width="100" Background="LightGreen" Click="AddPointButton_Click"/>
                 <Button x:Name="UsePointButton" Grid.Row="7" Grid.Column="1" Content="Use" HorizontalAlignment="Right" Width="100" Background="LightPink" Click="UsePointButton_Click"/>
                 <Button x:Name="EditButton" Grid.Row="8" Grid.Column="1" Content="New customer" Margin="0,10,0,0" Background="LightYellow" Click="EditButton_Click"/>
-                <TextBlock x:Name="StatusTextBlock" Grid.Row="9" Grid.ColumnSpan="3" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                <TextBlock x:Name="StatusTextBlock" Grid.Row="9" Grid.ColumnSpan="3" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center"/>
             </Grid>
 
             <WrapPanel Grid.Column="1" Margin="15,15,0,0">

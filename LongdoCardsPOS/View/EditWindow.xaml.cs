@@ -1,6 +1,4 @@
-﻿using LongdoCardsPOS.Controller;
-using LongdoCardsPOS.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -52,7 +50,6 @@ namespace LongdoCardsPOS
                 Status(validate);
                 return;
             }
-
 
             if (string.IsNullOrEmpty(User.Id))
             {

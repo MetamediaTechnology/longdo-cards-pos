@@ -1,5 +1,4 @@
-﻿using LongdoCardsPOS.Controller;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -52,12 +51,10 @@ namespace LongdoCardsPOS
         {
             if (string.IsNullOrEmpty(UsernameBox.Text) && string.IsNullOrEmpty(PasswordBox.Password))
             {
-                StatusTextBlock.Text = "Invalid username or password";
-                StatusTextBlock.Foreground = Brushes.Red;
+                Status("Invalid username or password");
                 return;
             }
-            StatusTextBlock.Text = "Loading...";
-            StatusTextBlock.Foreground = Brushes.Gray;
+            Status("Loading...", Brushes.Gray);
 
             Service.Login(UsernameBox.Text, PasswordBox.Password, (error, data) =>
             {
@@ -69,10 +66,15 @@ namespace LongdoCardsPOS
                 }
                 else
                 {
-                    StatusTextBlock.Text = error;
-                    StatusTextBlock.Foreground = Brushes.Red;
+                    Status(error);                    StatusTextBlock.Foreground = Brushes.Red;
                 }
             });
+        }
+
+        private void Status(string message, Brush color = null)
+        {
+            StatusTextBlock.Text = message;
+            StatusTextBlock.Foreground = color ?? Brushes.Red;
         }
     }
 }

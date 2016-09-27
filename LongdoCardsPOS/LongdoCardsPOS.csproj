@@ -71,8 +71,8 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="QRCoder, Version=1.1.7.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\QRCoder.1.1.7\lib\net40\QRCoder.dll</HintPath>
+    <Reference Include="QRCoder, Version=1.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\QRCoder.1.2.2\lib\net40\QRCoder.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -89,7 +89,7 @@
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\QRCoder.1.1.7\lib\net40\UnityEngine.dll</HintPath>
+      <HintPath>..\packages\QRCoder.1.2.2\lib\net40\UnityEngine.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="WindowsBase" />
@@ -101,24 +101,25 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="EditWindow.xaml.cs">
+    <Compile Include="Controller\Config.cs" />
+    <Compile Include="View\EditWindow.xaml.cs">
       <DependentUpon>EditWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\Reward.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="TicketWindow.xaml.cs">
+    <Compile Include="View\TicketWindow.xaml.cs">
       <DependentUpon>TicketWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="EditWindow.xaml">
+    <Page Include="View\EditWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="LoginWindow.xaml">
+    <Page Include="View\LoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -129,14 +130,14 @@
     <Compile Include="Controller\Extension.cs" />
     <Compile Include="Controller\Service.cs" />
     <Compile Include="Controller\Util.cs" />
-    <Compile Include="LoginWindow.xaml.cs">
+    <Compile Include="View\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="TicketWindow.xaml">
+    <Page Include="View\TicketWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -185,9 +186,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Images\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
