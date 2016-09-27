@@ -14,11 +14,7 @@ namespace LongdoCardsPOS
             get
             {
                 var version = FileVersionInfo.GetVersionInfo(Application.ResourceAssembly.Location).ProductVersion;
-#if DEBUG
-                return version + " DEV";
-#else
                 return version;
-#endif
             }
         }
 
@@ -26,11 +22,7 @@ namespace LongdoCardsPOS
         {
             get
             {
-#if DEBUG
-                return "https://card-test.longdo.com/";
-#else
-                return "https://card.longdo.com/"
-#endif
+                return "https://card.longdo.com/";
             }
         }
     }
