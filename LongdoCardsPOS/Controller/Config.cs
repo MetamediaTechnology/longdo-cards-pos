@@ -29,7 +29,7 @@ namespace LongdoCardsPOS
 #if DEBUG
                 return "https://card-test.longdo.com/";
 #else
-                return "https://card.longdo.com/"
+                return "https://card.longdo.com/";
 #endif
             }
         }
