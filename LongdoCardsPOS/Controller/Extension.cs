@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace LongdoCardsPOS.Controller
+namespace LongdoCardsPOS
 {
     static class Extension
     {

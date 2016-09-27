@@ -7,15 +7,12 @@ using System.Net;
 using System.Text;
 using System.Web.Script.Serialization;
 
-namespace LongdoCardsPOS.Controller
+namespace LongdoCardsPOS
 {
-    using Model;
     using Callback = Action<string, object>;
 
     class Service
     {
-        public const string CARD_SERVER = "https://cards.longdo.com/";
-
         public static void Login(string user, string pass, Callback action)
         {
             Request("main/login", new NameValueCollection
@@ -111,12 +108,13 @@ namespace LongdoCardsPOS.Controller
             }, action);
         }
 
-        public static void CreateTicket(string amount, Callback action)
+        public static void CreateTicket(string amount, string remark, Callback action)
         {
             Request("points/create_ticket", new NameValueCollection
             {
                 { "card_id", Settings.Default.CardId },
                 { "amount", amount },
+                { "remark", remark },
             }, action);
         }
 
@@ -128,7 +126,7 @@ namespace LongdoCardsPOS.Controller
 
             var client = new WebClient();
             client.UploadValuesCompleted += (s, e) => Response(e, action);
-            client.UploadValuesAsync(new Uri(CARD_SERVER + "/api/" + service), values);
+            client.UploadValuesAsync(new Uri(Config.Server + "/api/" + service), values);
         }
 
         private static void Response(UploadValuesCompletedEventArgs e, Callback action)

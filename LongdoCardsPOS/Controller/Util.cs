@@ -6,7 +6,7 @@ using System.Management;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LongdoCardsPOS.Controller
+namespace LongdoCardsPOS
 {
     class Util
     {

@@ -73,9 +73,9 @@ namespace LongdoCardsPOS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public LongdoCardsPOS.Model.Reward[] Rewards {
+        public Reward[] Rewards {
             get {
-                return ((LongdoCardsPOS.Model.Reward[])(this["Rewards"]));
+                return ((Reward[])(this["Rewards"]));
             }
             set {
                 this["Rewards"] = value;
