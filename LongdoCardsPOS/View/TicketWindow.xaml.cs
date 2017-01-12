@@ -20,22 +20,59 @@ namespace LongdoCardsPOS
     /// </summary>
     public partial class TicketWindow : Window
     {
+        public bool IsPoint { get; set; } = true;
+        public bool IsMember
+        {
+            get
+            {
+                return !IsPoint;
+            }
+            set
+            {
+                IsPoint = !value;
+            }
+        }
+
         public TicketWindow()
         {
             InitializeComponent();
+            DataContext = this;
         }
 
         private void PrintButton_Click(object sender, RoutedEventArgs e)
         {
-            int point;
-            if (int.TryParse(AmountBox.Text, out point))
+            if (IsPoint)
+            {
+                int point;
+                if (int.TryParse(AmountBox.Text, out point))
+                {
+                    Status("Loading...", Brushes.Gray);
+                    Service.CreateTicket(AmountBox.Text, RemarkBox.Text, (error, data) =>
+                    {
+                        if (error == null)
+                        {
+                            PrintTicket("TK:", data.ToDict().String("serial"), "Scan to get " + point + " points");
+                            StatusTextBlock.Text = string.Empty;
+                        }
+                        else
+                        {
+                            Status(error);
+                        }
+                    });
+                }
+                else
+                {
+                    Status("Invalid Point");
+                }
+            }
+            else
             {
                 Status("Loading...", Brushes.Gray);
-                Service.CreateTicket(AmountBox.Text, RemarkBox.Text, (error, data) =>
+                Service.CreateMemberTicket(AmountBox.Text, RemarkBox.Text, (error, data) =>
                 {
                     if (error == null)
                     {
-                        PrintTicket(data.ToDict().String("serial"));
+                        PrintTicket("MT:", data.ToDict().String("serial"), "Scan to become a member");
                         StatusTextBlock.Text = string.Empty;
                     }
                     else
@@ -43,16 +80,13 @@ namespace LongdoCardsPOS
                         Status(error);
                     }
                 });
-            } else
-            {
-                Status("Invalid Point");
             }
         }
 
-        private void PrintTicket(string serial)
+        private void PrintTicket(string prefix, string serial, string text)
         {
             var generator = new QRCodeGenerator();
-            var data = generator.CreateQrCode("TK:" + serial, QRCodeGenerator.ECCLevel.M);
+            var data = generator.CreateQrCode(prefix + serial, QRCodeGenerator.ECCLevel.M);
             var code = new QRCode(data).GetGraphic(5);
 
             var font1 = new System.Drawing.Font("Courier New", 8);
@@ -63,7 +97,7 @@ namespace LongdoCardsPOS
             doc.PrintPage += (sender, e) => {
                 e.Graphics.DrawImage(code, 0, 0);
                 e.Graphics.DrawString(serial, font1, color, 18, 130);
-                var text = "Longdo cards" + Environment.NewLine + "Scan to get " + AmountBox.Text + " points";
+                text = "Longdo cards" + Environment.NewLine + text;
                 if (!String.IsNullOrEmpty(RemarkBox.Text))
                 {
                     text += Environment.NewLine + RemarkBox.Text;
