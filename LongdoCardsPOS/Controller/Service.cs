@@ -86,6 +86,16 @@ namespace LongdoCardsPOS
             }, action);
         }
 
+        public static void CreateMemberTicket(string level, string remark, Callback action)
+        {
+            Request("main/create_member_ticket", new NameValueCollection
+            {
+                { "card_id", Settings.Default.CardId },
+                { "level", level },
+                { "remark", remark },
+            }, action);
+        }
+
         public static void AddPoint(User user, string point, Callback action)
         {
             Request("points/add_customer_point", new NameValueCollection
@@ -111,7 +121,7 @@ namespace LongdoCardsPOS
         public static void CreateTicket(string amount, string remark, Callback action)
         {
             Request("points/create_ticket", new NameValueCollection
-            {
+                {
                 { "card_id", Settings.Default.CardId },
                 { "amount", amount },
                 { "remark", remark },
