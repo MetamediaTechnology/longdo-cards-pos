@@ -40,12 +40,20 @@ namespace LongdoCardsPOS
             }, action);
         }
 
-        public static void GetCustomer(string plasticId, Callback action)
+        public static void GetCustomers(Callback action)
+        {
+            Request("main/get_customers", new NameValueCollection
+            {
+                { "card_id", Settings.Default.CardId },
+            }, action);
+        }
+
+        public static void GetCustomer(string ident, bool isPlastic, Callback action)
         {
             Request("main/get_customer_info", new NameValueCollection
             {
                 { "card_id", Settings.Default.CardId },
-                { "plastic_ident", plasticId },
+                { isPlastic ? "plastic_ident" : "cuid", ident },
             }, action);
         }
 
@@ -70,6 +78,9 @@ namespace LongdoCardsPOS
                 { "card_id", Settings.Default.CardId },
                 { user.Key, user.Id },
                 { "mobile", user.Mobile },
+                { "fname", user.Fname },
+                { "lname", user.Lname },
+                { "gender", user.Gender },
             }, action);
         }
 
@@ -148,9 +159,8 @@ namespace LongdoCardsPOS
                 var result = Encoding.UTF8.GetString(e.Result);
                 Util.Log("Complete: " + result);
                 var json = new JavaScriptSerializer().DeserializeObject(result).ToDict();
-                if (json.String("code") != "200") throw new Exception(json.String("msg"));
-
-                action(null, json.ContainsKey("data") ? json["data"] : null);
+                var error = json.String("code") == "200" ? null : json.String("msg");
+                action(error, json.ContainsKey("data") ? json["data"] : null);
             }
             catch (Exception ex)
             {

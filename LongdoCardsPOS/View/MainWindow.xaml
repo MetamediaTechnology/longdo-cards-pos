@@ -3,9 +3,21 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:w="http://wpfcontrols.com/"
         xmlns:local="clr-namespace:LongdoCardsPOS"
+        xmlns:c="clr-namespace:LongdoCardsPOS.Controller"
         mc:Ignorable="d"
         Title="Longdo Cards POS " Height="600" Width="800" MinWidth="480" MinHeight="360" FontSize="24" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <c:UserSuggestionProvider x:Key="UserSuggestionProvider" />
+        <DataTemplate x:Key="UserSuggestTemplate">
+            <StackPanel>
+                <TextBlock Text="{Binding Path=Fullname}" FontSize="16"/>
+                <TextBlock Text="{Binding Path=Mail}" Margin="10,0,0,0" FontSize="12" Foreground="Gray"/>
+                <TextBlock Text="{Binding Path=Mobile}" Margin="10,0,0,0" FontSize="12" Foreground="Gray"/>
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
@@ -42,7 +54,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="User:"/>
-                <TextBox x:Name="BarcodeBox" Grid.Column="1" VerticalAlignment="Top" KeyUp="BarcodeBox_KeyUp"/>
+                <w:AutoCompleteTextBox x:Name="IdentBox" Grid.Column="1" VerticalAlignment="Top" DisplayMember="Fullname" Provider="{StaticResource ResourceKey=UserSuggestionProvider}" ItemTemplate="{StaticResource ResourceKey=UserSuggestTemplate}" KeyUp="IdentBox_KeyUp"/>
                 <Button x:Name="FindButton" Grid.Row="1" Grid.Column="1" Content="Find" Click="FindButton_Click"/>
 
                 <TextBlock Grid.Row="2" Grid.ColumnSpan="3" Text="__ Customer Info ____________" VerticalAlignment="Bottom"/>

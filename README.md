@@ -14,3 +14,5 @@ to develop Point of sale applications with Longdo Cards API
   * Longdo Cards © 2009 - now. All Rights Reserved.
   * Code released under the [Apache 2.0 license](LICENSE).
   * Using [QRCoder](https://github.com/codebude/QRCoder/) library.
+  * Using [WPF AutoComplete](https://wpfautocomplete.codeplex.com/) library.
+  
