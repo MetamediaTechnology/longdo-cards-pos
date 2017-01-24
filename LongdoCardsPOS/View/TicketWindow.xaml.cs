@@ -36,6 +36,7 @@ namespace LongdoCardsPOS
         public TicketWindow()
         {
             InitializeComponent();
+            AmountBox.Focus();
             DataContext = this;
         }
 

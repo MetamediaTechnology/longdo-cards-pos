@@ -270,7 +270,7 @@ namespace LongdoCardsPOS
                 return;
             }
 
-            Service.GetCustomer(ident, selectedUser.IsPlastic, (error, data) =>
+            Service.GetCustomer(ident, selectedUser?.IsPlastic ?? true, (error, data) =>
             {
                 if (error == null)
                 {
@@ -280,7 +280,7 @@ namespace LongdoCardsPOS
                     var dict = data.ToDict();
                     var isPlastic = dict.String("card_type") == "plastic";
                     user = User.FromDict(dict.Dict("user_info"), isPlastic);
-                    NameTextBlock.Text = user.Fname + " " + user.Lname;
+                    NameTextBlock.Text = user.Fullname;
 
                     ShowExpire(dict["card"]);
                     PointTextBlock.Text = dict.Dict("point").String("now");

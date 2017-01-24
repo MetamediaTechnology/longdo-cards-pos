@@ -28,6 +28,7 @@ namespace LongdoCardsPOS
             {
                 user = new User();
                 Title = "New Customer";
+                SerialBox.Focus();
             }
             else if (string.IsNullOrEmpty(user.Key))
             {
