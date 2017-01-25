@@ -1,4 +1,5 @@
-﻿using LongdoCardsPOS.Properties;
+﻿using LongdoCardsPOS.Controller;
+using LongdoCardsPOS.Properties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace LongdoCardsPOS
         {
             InitializeComponent();
 
-            BarcodeBox.Focus();
+            IdentBox.Focus();
             LoadCard();
 
             Title += Config.Version;
@@ -56,17 +57,17 @@ namespace LongdoCardsPOS
             }
         }
 
-        private void BarcodeBox_KeyUp(object sender, KeyEventArgs e)
+        private void IdentBox_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                LoadCustomer();
+                LoadCustomerInfo();
             }
         }
 
         private void FindButton_Click(object sender, RoutedEventArgs e)
         {
-            LoadCustomer();
+            LoadCustomerInfo();
         }
 
         private void PointBox_KeyUp(object sender, KeyEventArgs e)
@@ -157,9 +158,16 @@ namespace LongdoCardsPOS
             var edit = new EditWindow(user);
             edit.Closed += (sender2, e2) =>
             {
-                if (user == null) return;
+                if (user == null) return; // New
 
-                NameTextBlock.Text = user.Fname + " " + user.Lname;
+                if (string.IsNullOrEmpty(StatusTextBlock.Text)) // Edit
+                {
+                    NameTextBlock.Text = user.Fname + " " + user.Lname;
+                }
+                else // Assign
+                {
+                    LoadCustomerInfo();
+                }
             };
             edit.ShowDialog();
         }
@@ -204,6 +212,7 @@ namespace LongdoCardsPOS
             {
                 CardTextBlock.Text = Settings.Default.CardName;
                 LoadRewards();
+                LoadCustomers();
             }
         }
 
@@ -230,7 +239,15 @@ namespace LongdoCardsPOS
             }
         }
 
-        private void LoadCustomer()
+        private void LoadCustomers()
+        {
+            Service.GetCustomers((error, data) =>
+            {
+                UserSuggestionProvider.Users = from d in data.ToArray() select User.FromDict(d.ToDict());
+            });
+        }
+
+        private void LoadCustomerInfo()
         {
             user = null;
 
@@ -245,23 +262,25 @@ namespace LongdoCardsPOS
             Status("Loading...", Brushes.Gray);
             RewardListView.SelectedItem = null;
 
-            if (string.IsNullOrEmpty(BarcodeBox.Text))
+            var selectedUser = (User)IdentBox.SelectedItem;
+            var ident = selectedUser?.Id ?? IdentBox.Filter;
+            if (string.IsNullOrEmpty(ident))
             {
                 Status("No customer");
                 return;
             }
 
-            Service.GetCustomer(BarcodeBox.Text, (error, data) =>
+            Service.GetCustomer(ident, selectedUser?.IsPlastic ?? true, (error, data) =>
             {
                 if (error == null)
                 {
-                    BarcodeBox.Text = string.Empty;
+                    IdentBox.Editor.Text = string.Empty;
                     StatusTextBlock.Text = string.Empty;
 
                     var dict = data.ToDict();
                     var isPlastic = dict.String("card_type") == "plastic";
-                    user = User.FromDict(dict["user_info"], isPlastic);
-                    NameTextBlock.Text = user.Fname + " " + user.Lname;
+                    user = User.FromDict(dict.Dict("user_info"), isPlastic);
+                    NameTextBlock.Text = user.Fullname;
 
                     ShowExpire(dict["card"]);
                     PointTextBlock.Text = dict.Dict("point").String("now");
@@ -278,6 +297,15 @@ namespace LongdoCardsPOS
                 }
                 else
                 {
+                    var unAssignedCard = data?.ToDict()?.Dict("plastic_card");
+                    if (unAssignedCard != null)
+                    {
+                        EditButton.Content = "Assign customer";
+                        user = new User
+                        {
+                            Id = unAssignedCard.String("pcard_id")
+                        };
+                    }
                     Status(error);
                 }
             });

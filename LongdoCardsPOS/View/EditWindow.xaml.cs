@@ -28,6 +28,13 @@ namespace LongdoCardsPOS
             {
                 user = new User();
                 Title = "New Customer";
+                SerialBox.Focus();
+            }
+            else if (string.IsNullOrEmpty(user.Key))
+            {
+                Title = "Assign Customer";
+                CodeGrid.Visibility = Visibility.Collapsed;
+                Height -= 90;
             }
             else
             {
@@ -62,6 +69,23 @@ namespace LongdoCardsPOS
                     }
                     else
                     {
+                        Status(error);
+                    }
+                });
+            }
+            else if(string.IsNullOrEmpty(User.Key))
+            {
+                User.Key = "pcard_id";
+                Service.SubscribeCustomer(User, (error, data) =>
+                {
+                    if (error == null)
+                    {
+                        MessageBox.Show("Assign completed");
+                        Close();
+                    }
+                    else
+                    {
+                        User.Key = null;
                         Status(error);
                     }
                 });
