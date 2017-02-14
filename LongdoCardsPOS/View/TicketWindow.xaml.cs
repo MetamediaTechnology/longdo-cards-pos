@@ -95,7 +95,7 @@ namespace LongdoCardsPOS
             var color = System.Drawing.Brushes.Black;
 
             var doc = new PrintDocument();
-            doc.PrintPage += (sender, e) => {
+            doc.PrintPage += (_, e) => {
                 e.Graphics.DrawImage(code, 0, 0);
                 e.Graphics.DrawString(serial, font1, color, 18, 130);
                 text = "Longdo cards" + Environment.NewLine + text;

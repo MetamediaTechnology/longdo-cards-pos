@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -27,10 +28,13 @@ namespace LongdoCardsPOS
         {
             InitializeComponent();
 
-            IdentBox.Focus();
             LoadCard();
-
             Title += Config.Version;
+
+            Util.After(0, (_, __) =>
+            {
+                IdentBox.Editor.Focus();
+            });
         }
 
         private void SwitchButton_Click(object sender, RoutedEventArgs e)
@@ -156,7 +160,7 @@ namespace LongdoCardsPOS
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
             var edit = new EditWindow(user);
-            edit.Closed += (sender2, e2) =>
+            edit.Closed += (_, __) =>
             {
                 if (user == null) return; // New
 
@@ -175,7 +179,7 @@ namespace LongdoCardsPOS
         private void RewardListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             reward = (Reward)RewardListView.SelectedItem;
-            PointBox.Text = reward == null ? string.Empty : reward.Name;
+            PointBox.Text = reward?.Name;
         }
 
         private void LoadCard(string currentCardId = null)
@@ -243,7 +247,17 @@ namespace LongdoCardsPOS
         {
             Service.GetCustomers((error, data) =>
             {
-                UserSuggestionProvider.Users = from d in data.ToArray() select User.FromDict(d.ToDict());
+                if (error == null)
+                {
+                    UserSuggestionProvider.Users = from d in data.ToArray() select User.FromDict(d.ToDict());
+                }
+                else
+                {
+                    Util.After(3000, (_, __) =>
+                    {
+                        LoadCustomers();
+                    });
+                }
             });
         }
 
@@ -262,7 +276,7 @@ namespace LongdoCardsPOS
             Status("Loading...", Brushes.Gray);
             RewardListView.SelectedItem = null;
 
-            var selectedUser = (User)IdentBox.SelectedItem;
+            var selectedUser = (User)IdentBox.SelectedItem ?? UserSuggestionProvider.FilterUsers?.FirstOrDefault();
             var ident = selectedUser?.Id ?? IdentBox.Filter;
             if (string.IsNullOrEmpty(ident))
             {
