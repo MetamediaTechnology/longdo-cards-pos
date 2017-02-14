@@ -1,9 +1,11 @@
 ﻿using LongdoCardsPOS.Properties;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Management;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace LongdoCardsPOS
@@ -49,6 +51,16 @@ namespace LongdoCardsPOS
         public static DateTime DateTimeFromTimestamp(int timestamp)
         {
             return new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(timestamp).ToLocalTime();
+        }
+
+        public static void After(int delay, RunWorkerCompletedEventHandler action)
+        {
+            var worker = new BackgroundWorker();
+            worker.DoWork += (_, __) => {
+                Thread.Sleep(delay);
+            };
+            worker.RunWorkerCompleted += action;
+            worker.RunWorkerAsync();
         }
     }
 }

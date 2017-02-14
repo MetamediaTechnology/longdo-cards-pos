@@ -44,7 +44,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="User:"/>
-                <w:AutoCompleteTextBox x:Name="IdentBox" Grid.Column="1" VerticalAlignment="Top" DisplayMember="Fullname" KeyUp="IdentBox_KeyUp">
+                <w:AutoCompleteTextBox x:Name="IdentBox" Grid.Column="1" VerticalAlignment="Top" DisplayMember="Fullname" Delay="0" KeyUp="IdentBox_KeyUp">
                     <w:AutoCompleteTextBox.Provider>
                         <c:UserSuggestionProvider/>
                     </w:AutoCompleteTextBox.Provider>

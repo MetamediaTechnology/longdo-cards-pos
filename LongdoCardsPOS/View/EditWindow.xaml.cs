@@ -60,7 +60,7 @@ namespace LongdoCardsPOS
 
             if (string.IsNullOrEmpty(User.Id))
             {
-                Service.NewCustomer(SerialBox.Text, BarcodeBox.Text, User, (error, data) =>
+                Service.NewCustomer(SerialBox.Text, BarcodeBox.Text, User, (error, _) =>
                 {
                     if (error == null)
                     {
@@ -76,7 +76,7 @@ namespace LongdoCardsPOS
             else if(string.IsNullOrEmpty(User.Key))
             {
                 User.Key = "pcard_id";
-                Service.SubscribeCustomer(User, (error, data) =>
+                Service.SubscribeCustomer(User, (error, _) =>
                 {
                     if (error == null)
                     {
@@ -92,7 +92,7 @@ namespace LongdoCardsPOS
             }
             else
             {
-                Service.SetCustomer(User, (error, data) =>
+                Service.SetCustomer(User, (error, _) =>
                 {
                     if (error == null)
                     {

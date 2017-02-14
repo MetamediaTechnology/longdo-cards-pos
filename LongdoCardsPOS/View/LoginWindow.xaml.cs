@@ -66,7 +66,8 @@ namespace LongdoCardsPOS
                 }
                 else
                 {
-                    Status(error);                    StatusTextBlock.Foreground = Brushes.Red;
+                    Status(error);
+                    StatusTextBlock.Foreground = Brushes.Red;
                 }
             });
         }
